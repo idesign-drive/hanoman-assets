@@ -305,14 +305,25 @@ const track=document.getElementById('marquee');track.innerHTML+=track.innerHTML;
    dock.inert=false;
    dock.setAttribute('aria-hidden','false');
    dock.classList.remove('is-hidden');
-   dock.classList.add('is-entering');
    setExpanded(true);
+   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+     dock.classList.remove('is-entering');
+     return;
+   }
+   dock.classList.add('is-entering');
  }
  function hideBooking(){
    if(dock.classList.contains('is-hidden')||dock.classList.contains('is-leaving'))return;
    dock.classList.remove('is-entering');
-   dock.classList.add('is-leaving');
    setExpanded(false);
+   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+     dock.classList.remove('is-leaving');
+     dock.classList.add('is-hidden');
+     dock.inert=true;
+     dock.setAttribute('aria-hidden','true');
+     return;
+   }
+   dock.classList.add('is-leaving');
  }
  openButton.addEventListener('click',openBooking);
  hideButton.addEventListener('click',hideBooking);
